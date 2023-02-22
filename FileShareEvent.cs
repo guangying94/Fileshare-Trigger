@@ -14,7 +14,10 @@ namespace Fileshare_Trigger
     public static class FileShareEvent
     {
         [FunctionName("FileShareTrigger")]
-        public static async Task Run([EventHubTrigger("fileshare-write-event", Connection = "EVENT_HUB_CONNECTION_STRING")] EventData[] events, ILogger log)
+        public static async Task Run(
+            [EventHubTrigger("fileshare-write-event", 
+            Connection = "EVENT_HUB_CONNECTION_STRING")] EventData[] events, 
+            ILogger log)
         {
             var exceptions = new List<Exception>();
 
@@ -75,7 +78,11 @@ namespace Fileshare_Trigger
             HttpClient client = new HttpClient();
             string logicAppURL = Environment.GetEnvironmentVariable("LOGIC_APP_URL");
 
-            var response = await client.PostAsync(logicAppURL, new StringContent(JsonConvert.SerializeObject(body), Encoding.UTF8, "application/json"));
+            var response = await client.PostAsync(
+                logicAppURL, 
+                new StringContent(JsonConvert.SerializeObject(body), 
+                Encoding.UTF8, 
+                "application/json"));
 
             if (response.IsSuccessStatusCode)
             {
